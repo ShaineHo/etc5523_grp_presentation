@@ -155,28 +155,24 @@ data.frame(Variables = names(locations),
 ```
 
 ---
+## Summary of weather.csv
 
-## Summary of weather
-
---
-
-```{r weather-miss, fig.height=5, fig.width=10}
+```{r weather-miss,fig.height=6, fig.width=10}
 weather <- read_csv("data/weather.csv")
 
 visdat::vis_dat(weather)+
-  labs(x = "Variables")
+  labs(x = "Variables")+
+  theme(axis.text.x = element_text(angle =45))
 ```
-
 --
 
-- weather.csv downloaded from [City of Melbourne- Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
-
+- Downloaded from [City of Melbourne- Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
 --
 
 - Contains environmental readings from microclimate sensors
 --
 
-- The data dictionary is accessible [Here](https://data.melbourne.vic.gov.au/api/views/u4vh-84j8/files/a2a9a6e3-2d46-4469-8d04-3335306034d5?download=true&filename=MicroClimateSensors_Metadata_Attachment_DataDictionary.pdf)
+- Data dictionary is accessible [Here](https://data.melbourne.vic.gov.au/api/views/u4vh-84j8/files/a2a9a6e3-2d46-4469-8d04-3335306034d5?download=true&filename=MicroClimateSensors_Metadata_Attachment_DataDictionary.pdf)
 
 ---
 
