@@ -12,59 +12,136 @@ output:
       countIncrementalSlides: false
 ---
 
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+background-image: url(https://images.alwatanvoice.com/news/large/9998451553.jpg)
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(lubridate)
+library(leaflet)
+library(kableExtra)
 options(htmltools.dir.version = FALSE)
 ```
 
-???
+# The unpredictable weather in Melbourne
 
-Image credit: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sharingan_triple.svg)
-
----
-class: center, middle
-
-# xaringan
-
-### /ʃaː.'riŋ.ɡan/
-
----
-class: inverse, center, middle
-
-# Get Started
+.footnote[Image credit: [alwatanvoice](https://www.alwatanvoice.com/arabic/content/print/515691.html)]
 
 ---
 
-# Hello World
 
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
 
-```{r eval=FALSE, tidy=FALSE}
-remotes::install_github("yihui/xaringan")
+# Introduction
+
+- [Humidity Check](https://humiditycheck.com/comfortable-humidity-level-outside)  
+the relative humidity level outside is considered comfortable between 30% and 50%.   
+
+- [Environmental Protection Agency](https://www.epa.gov/mold/mold-course-chapter-2)  
+the relative humidity should be kept below 60 percent
+
+--
+
+## Questions
+
+- How does relative humidity in Melbourne change throughout the measured time?
+
+- When is it most uncomfortable to walk around the city (humidity below 30% or above 60%)?
+
+---
+## Data Description
+
+```{r}
+locations <- read_csv("data/locations.csv")
+```
+--
+- The location.csv data is the clean data which was originally downloaded from [City of Melbourne- Microclimate-Sensor-locations](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Locations/irqv-hjr4) which contains the location and location description for each microclimate sensor device installed throughout the city.
+--
+
+### The locations of the sensor in Map
+
+```{r sensor-location, out.height='50%', out.width='100%'}
+locations$description <- paste0("Site",locations$site_id, ", ", locations$description)
+  
+locations %>%
+      leaflet() %>%
+      addMarkers(
+        lng = ~longitude,
+        lat = ~latitude,
+        popup = ~description,
+        layerId = ~site_id
+      ) %>%
+      addTiles()
 ```
 
---
+---
 
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
+# Summary of locations.csv
 
-- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
+``` {css, echo =F} 
+    .pull-left {
+      float: left;
+      width: 65%;
+    }
 
---
+    .pull-right {
+      float: right;
+     width: 35%;
+    }
+```
 
-- Click the `Knit` button to compile it;
+.pull-left[
 
---
-
-- or use the [RStudio Addin](https://rstudio.github.io/rstudioaddins/)<sup>2</sup> "Infinite Moon Reader" to live preview the slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
-
-.footnote[
-[1] 中文用户请看[这份教程](https://slides.yihui.org/xaringan/zh-CN.html)
-
-[2] See [#2](https://github.com/yihui/xaringan/issues/2) if you do not see the template or addin in RStudio.
+```{r loction-plot}
+visdat::vis_dat(locations)+
+  labs(x = "Variables")
+```
 ]
 
+--
+
+.pull-right[
+- The data types includes:  **Numeric**, **Character**, **Date**.
+
+- The end_reading variable in this data set are all missing
+
+- The fourth data is found missing in last_data.
+
+]
 ---
+
+# The data dictionary of locations.csv
+
+```{r}
+data.frame(Variables = names(locations),
+           Description = c("Unique location id referring to the location of sensor device (used to link the location of the sensor device to the Microclimate Sensor Readings dataset",
+                           "Unique sensor device id. One sensor device will contain multiple microclimate sensors (used in combination with the site_id to link to the Microclimate Sensor Readings dataset",
+                           "Description of the location of the sensor device",
+                           "Date and time when the last data was sent from a sensor associated with the sensor device",
+                           "Indicates if the site is a historic location for the sensor device or currently in use. R = retired, the location is no longer in use. C = current, the present location of the sensor device",
+                           "Date and time sensor device began transmitting data from this site",
+                           "Longitude of the site",
+                           "Latitude of the site",
+                           "Type of the location",
+                           "Date and time sensor device stopped transmitting data from this site"),
+           Datatype = c("Numeric",
+                        "Character",
+                        "Character",
+                        "Date",
+                        "Character",
+                        "Date",
+                        "Numeric",
+                        "Numeric",
+                        "Character",
+                        "Date"   )) %>% 
+  kable(align = "l", 
+        col.names = c("Variables","Description", "Data-type")) %>% 
+  row_spec(0, color = "white", background = "#0C85E4", align = "c") %>% 
+  kable_styling(bootstrap_options = "striped", font_size = 12) %>% 
+  scroll_box(width = "100%")  
+```
+
+---
+
 background-image: url(`r xaringan:::karl`)
 background-position: 50% 50%
 class: center, bottom, inverse

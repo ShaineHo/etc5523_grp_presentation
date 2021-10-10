@@ -4,7 +4,7 @@
     <title>Weather in Melbourne</title>
     <meta charset="utf-8" />
     <meta name="author" content="Yin Shan Ho, Yu Luo, Zoljargal Batsaikhan" />
-    <meta name="date" content="2021-10-06" />
+    <meta name="date" content="2021-10-10" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <script src="libs/htmlwidgets/htmlwidgets.js"></script>
@@ -16,6 +16,8 @@
     <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
     <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
     <script src="libs/leaflet-binding/leaflet.js"></script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
     <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
     <script src="libs/datatables-binding/datatables.js"></script>
     <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -31,63 +33,151 @@ class: center, middle, inverse, title-slide
 # Weather in Melbourne
 ### Yin Shan Ho, Yu Luo, Zoljargal Batsaikhan
 ### Monash University
-### 2021-10-06
+### 2021-10-10
 
 ---
 
 
-background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharingan_triple.svg)
+background-image: url(https://images.alwatanvoice.com/news/large/9998451553.jpg)
 
 
 
-???
+# The unpredictable weather in Melbourne
 
-Image credit: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sharingan_triple.svg)
-
----
-class: center, middle
-
-# xaringan
-
-### /ʃaː.'riŋ.ɡan/
-
----
-class: inverse, center, middle
-
-# Get Started
+.footnote[Image credit: [alwatanvoice](https://www.alwatanvoice.com/arabic/content/print/515691.html)]
 
 ---
 
-# Hello World
-
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
 
 
-```r
-remotes::install_github("yihui/xaringan")
-```
+# Introduction
+
+- [Humidity Check](https://humiditycheck.com/comfortable-humidity-level-outside)  
+the relative humidity level outside is considered comfortable between 30% and 50%.   
+
+- [Environmental Protection Agency](https://www.epa.gov/mold/mold-course-chapter-2)  
+the relative humidity should be kept below 60 percent
 
 --
 
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
+## Questions
 
-- Create a new R Markdown document from the menu `File -&gt; New File -&gt; R Markdown -&gt; From Template -&gt; Ninja Presentation`;&lt;sup&gt;1&lt;/sup&gt;
+- How does relative humidity in Melbourne change throughout the measured time?
+
+- When is it most uncomfortable to walk around the city (humidity below 30% or above 60%)?
+
+---
+## Data Description
+
 
 --
-
-- Click the `Knit` button to compile it;
-
+- The location.csv data is the clean data which was originally downloaded from [City of Melbourne- Microclimate-Sensor-locations](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Locations/irqv-hjr4) which contains the location and location description for each microclimate sensor device installed throughout the city.
 --
 
-- or use the [RStudio Addin](https://rstudio.github.io/rstudioaddins/)&lt;sup&gt;2&lt;/sup&gt; "Infinite Moon Reader" to live preview the slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
+### The locations of the sensor in Map
 
-.footnote[
-[1] 中文用户请看[这份教程](https://slides.yihui.org/xaringan/zh-CN.html)
+<div id="htmlwidget-97f544e89aefb1ae5a5c" style="width:100%;height:50%;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-97f544e89aefb1ae5a5c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addMarkers","args":[[-37.82250002,-37.8175,-37.810278,-37.822222,-37.813333,-37.82246,-37.812778,-37.811944,-37.81686763],[144.95222195,144.967222,144.9725,144.952222,144.97,144.951835,144.960556,144.956389,144.96570467],null,[1010,1014,1015,1011,1012,1007,1016,1013,1009],null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Site1010, Melbourne Convention Centre Carpark, approximately 31m NE of Bababoi, Unit 16, Ground 60 Siddeley StreetDOCKLANDS VIC 3008","Site1014, Flinders Street between Swanston Street and Elizabeth Street, approximately 15m South of Young & Jackson, Young And Jacksons Hotel1-7 Swanston StreetMELBOURNE VIC 3000","Site1015, Spring Street between Little Bourke Street and Lonsdale Street, approximately 13m NE of COVID closed as at 12-JUN-21, 185-197 Spring StreetMELBOURNE VIC 3000","Site1011, Melbourne Convention Centre Carpark, approximately 38m East of Care Park, Melbourne Convention Centre Carpark671-701 Flinders StreetDOCKLANDS VIC 3008","Site1012, Little Collins Street between Exhibition Street and Russell Street, approximately 8m NW of Stamford Plaza Melbourne, 111 Little Collins StreetMELBOURNE VIC 3000","Site1007, Siddeley Street between Spencer Street and Wurundjeri Way, approximately 24m South of Care Park, Melbourne Convention Centre Carpark671-701 Flinders StreetDOCKLANDS VIC 3008","Site1016, Lonsdale Street between Elizabeth Street and Queen Street, approximately 16m South of Who Salon, 402 Lonsdale StreetMELBOURNE VIC 3000","Site1013, William Street between Little Lonsdale Street and La Trobe Street, approximately 24m West of The Mint Bar & Restaurant, Northern GuardhouseRoyal Mint318 William StreetMELBOURNE VIC 3000","Site1009, Flinders Lane between Swanston Street and Elizabeth Street, approximately 7m South of Centro Espresso Cafe, Shop 2, 252 Flinders LaneMELBOURNE VIC 3000"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"limits":{"lat":[-37.82250002,-37.810278],"lng":[144.951835,144.9725]}},"evals":[],"jsHooks":[]}</script>
 
-[2] See [#2](https://github.com/yihui/xaringan/issues/2) if you do not see the template or addin in RStudio.
+---
+
+# Summary of locations.csv
+
+&lt;style type="text/css"&gt;
+    .pull-left {
+      float: left;
+      width: 65%;
+    }
+
+    .pull-right {
+      float: right;
+     width: 35%;
+    }
+&lt;/style&gt;
+
+.pull-left[
+
+![](grp_presentation_files/figure-html/loction-plot-1.png)&lt;!-- --&gt;
 ]
 
+--
+
+.pull-right[
+- The data types includes:  **Numeric**, **Character**, **Date**.
+
+- The end_reading variable in this data set are all missing
+
+- The fourth data is found missing in last_data.
+
+]
 ---
+
+# The data dictionary of locations.csv
+
+&lt;div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; "&gt;&lt;table class="table table-striped" style="font-size: 12px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;color: white !important;background-color: #0C85E4 !important;text-align: center;"&gt; Variables &lt;/th&gt;
+   &lt;th style="text-align:left;color: white !important;background-color: #0C85E4 !important;text-align: center;"&gt; Description &lt;/th&gt;
+   &lt;th style="text-align:left;color: white !important;background-color: #0C85E4 !important;text-align: center;"&gt; Data-type &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; site_id &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unique location id referring to the location of sensor device (used to link the location of the sensor device to the Microclimate Sensor Readings dataset &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Numeric &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gateway_hub_id &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unique sensor device id. One sensor device will contain multiple microclimate sensors (used in combination with the site_id to link to the Microclimate Sensor Readings dataset &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Character &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; description &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Description of the location of the sensor device &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Character &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; last_data &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date and time when the last data was sent from a sensor associated with the sensor device &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; site_status &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Indicates if the site is a historic location for the sensor device or currently in use. R = retired, the location is no longer in use. C = current, the present location of the sensor device &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Character &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; start_reading &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date and time sensor device began transmitting data from this site &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; longitude &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Longitude of the site &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Numeric &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; latitude &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Latitude of the site &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Numeric &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; location.type &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Type of the location &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Character &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; end_reading &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date and time sensor device stopped transmitting data from this site &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+
 background-image: url(https://github.com/yihui/xaringan/releases/download/v0.0.2/karl-moustache.jpg)
 background-position: 50% 50%
 class: center, bottom, inverse
@@ -216,21 +306,10 @@ Limitations:
 # R Code
 
 
-```r
-# a boring regression
-fit = lm(dist ~ 1 + speed, data = cars)
-coef(summary(fit))
-```
-
 ```
 #               Estimate Std. Error   t value     Pr(&gt;|t|)
 # (Intercept) -17.579095  6.7584402 -2.601058 1.231882e-02
 # speed         3.932409  0.4155128  9.463990 1.489836e-12
-```
-
-```r
-dojutsu = c('地爆天星', '天照', '加具土命', '神威', '須佐能乎', '無限月読')
-grep('天', dojutsu, value = TRUE)
 ```
 
 ```
@@ -241,13 +320,6 @@ grep('天', dojutsu, value = TRUE)
 
 # R Plots
 
-
-```r
-par(mar = c(4, 4, 1, .1))
-plot(cars, pch = 19, col = 'darkgray', las = 1)
-abline(fit, lwd = 2)
-```
-
 ![](grp_presentation_files/figure-html/cars-1.svg)&lt;!-- --&gt;
 
 ---
@@ -255,11 +327,6 @@ abline(fit, lwd = 2)
 # Tables
 
 If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-
-```r
-knitr::kable(head(iris), format = 'html')
-```
 
 &lt;table&gt;
  &lt;thead&gt;
@@ -329,27 +396,13 @@ See the next page for two HTML widgets.
 
 ---
 
-
-```r
-library(leaflet)
-leaflet() %&gt;% addTiles() %&gt;% setView(-93.65, 42.0285, zoom = 17)
-```
-
-<div id="htmlwidget-f30890ce0590e0ddf461" style="width:100%;height:432px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f30890ce0590e0ddf461">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[42.0285,-93.65],17,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-286b7455b1984d1d572f" style="width:100%;height:432px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-286b7455b1984d1d572f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[42.0285,-93.65],17,[]]},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-
-```r
-DT::datatable(
-  head(iris, 10),
-  fillContainer = FALSE, options = list(pageLength = 8)
-)
-```
-
-<div id="htmlwidget-5b5a46ce114e54b10128" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5b5a46ce114e54b10128">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[8,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8c9cbbedf0a74cba74a0" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8c9cbbedf0a74cba74a0">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[8,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -479,15 +532,6 @@ if (TRUE) {
 ````
 Output:
 
-```r
-if (TRUE) {
-* message("Very important!") 
-}
-```
-
-```
-## Very important!
-```
 
 It is valid R code so you can run it. Note that `{{}}` can wrap an R expression of multiple lines.
 ]
@@ -511,13 +555,6 @@ ggplot(mtcars) +
 Output:
 
 
-```r
-library(ggplot2)
-ggplot(mtcars) + 
-  aes(mpg, disp) + 
-* geom_point() +
-* geom_smooth()
-```
 
 ---
 
@@ -664,10 +701,6 @@ This requires **rmarkdown** &gt;= 2.8 and the [**sass**](https://rstudio.github.
 
 Don't want to learn CSS? Okay, you can use some user-contributed themes. A theme typically consists of two CSS files `foo.css` and `foo-fonts.css`, where `foo` is the theme name. Below are some existing themes:
 
-
-```r
-names(xaringan:::list_css())
-```
 
 ```
 ##  [1] "chocolate-fonts"  "chocolate"        "default-fonts"   
