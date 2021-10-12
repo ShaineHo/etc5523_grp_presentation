@@ -291,14 +291,16 @@ weather_tidy %>%
 ---
 
 # Humidity Change by Time of A Day
+
 .pull-left[
-```{r humidity-bysite-time, out.width = "90%"}
+```{r humidity-bysite-time, out.width= "90%"}
 weather_tidy %>% 
   # filter(site_id == 1007) %>% 
   ggplot() +
   geom_line(aes(x = time,
                 y = relative_humidity_percent,
-                group = local_date)) +
+                group = local_date,
+                color = site_id)) +
   scale_x_continuous(breaks = seq(0, 24, 6))+
   geom_hline(yintercept = 60, color = "red", linetype = "dashed") +
   geom_hline(yintercept = 30, color = "red", linetype = "dashed") +
@@ -306,21 +308,23 @@ weather_tidy %>%
                   y = relative_humidity_percent),
               se = FALSE) +
   facet_wrap(~ site_id, ncol = 3)+
+  scale_color_brewer(palette = "Dark2") +
+  theme(legend.position = "none") +
   labs(x = "Time of A Day",
        y = "Humidity percent")
 ```
 ]
+--
 .pull-right[
 
-- Humidity changed throughout a day, all follow a similar pattern.
+- Humidity changes throughout a day, all sites follow a similar **day pattern**.
 <br>
 
-- Humidity turning points varies from place to place.
+- It is not uncomfortable to walk around **before about 9:00 to 12:00 and after about 18:00**.
+
+- Humidity change turning points/time **vary from site to site**.
 <br>
 
-- Uncomfortable Time: 
-1. Morning: Site 1007, 1011, 1014 - before about 9:00, 10:00; Site 1009, 1010, 1012, 1013, 1015, 1016 - before about 11:00 to 12:00.
-2. Night: after about 17:00, 18:00. 
 ]
 
 
@@ -345,14 +349,120 @@ weather_tidy %>%
   facet_grid(month ~ site_id) +
   scale_color_brewer(palette = "Dark2") +
   theme(legend.position = "none") +
-  labs(x = "Time",
+  labs(x = "Time of a day",
        y = "Humidity percent")
 ```
 ]
+--
 .pull-right[
-- The time that humidity between 30% to 60% are longer in August and September than in October, June and July.
+- Uncomfortable time tends to be **shorter from Jun to Sep (Winter)**.
 <br>
 
-- Site 1014 has the longest comfortable time, then site 1010 and 1007; the humidity of 1012, 1013 and 1019 between comfortable range is shorter.
+- In same month, The length of uncomfortable time **varies from site to site.**
 
 ]
+
+---
+
+# Closer to river, more humid?
+.pull-left[
+```{r humidity-bysite, out.width= "90%"}
+weather_selected_site <- 
+weather_tidy %>%   
+  filter(month == "Sep",
+         site_id %in% c("1007", "1010", "1011",
+                        "1014", "1009")) %>% 
+  group_by(site_id, time) %>% 
+  summarise(avg_humidity = mean(relative_humidity_percent)) 
+
+weather_tidy %>%   
+  filter(month == "Sep") %>% 
+  group_by(site_id, time) %>% 
+  summarise(avg_humidity = mean(relative_humidity_percent)) %>%
+  ggplot() +
+  geom_line(aes(x = time,
+                y = avg_humidity,
+                group = site_id),
+            color = "grey") +
+  geom_line(data = weather_selected_site,
+            aes(x = time,
+                y = avg_humidity,
+                group = site_id),
+            color = "red") +
+  scale_x_continuous(breaks = seq(0, 24, 6)) +
+  labs(x = "Time of a day",
+       y = "Average humidity percent")
+```
+]
+--
+.pull-right[
+- Red lines are **five sites closer to river**: 1007, 1010, 1011, 1014, 1009.
+<br>
+
+- It is not closer to water network, more humid.
+
+- Humidity is also **affected by many factors**: [river width](https://pubmed.ncbi.nlm.nih.gov/22720611/), [topography, land cover, and surface reflectivity](https://www.frontiersin.org/articles/10.3389/feart.2015.00010/full) and so on.
+
+]
+
+---
+# Acknowledgments and References
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+The R packages we used: [**tidyverse**](https://doi.org/10.21105/joss.01686), [**lubridate**](https://www.jstatsoft.org/v40/i03/), [**leaflet**](https://CRAN.R-project.org/package=leaflet), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**visdat**](http://dx.doi.org/10.21105/joss.00355).
+
+Data is downloaded from: 
+<br>
+[City of Melbourne-Microclimate Sensor Locations](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Locations/irqv-hjr4),
+<br>
+[City of Melbourne-Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
+
+
+
+Other references: 
+<br>
+[Environmental Protection Agency-Lesson 3:  Humidity](https://www.epa.gov/mold/mold-course-chapter-2),
+<br>
+[Humidity Check-What Is a Comfortable Humidity Level Outside?](https://humiditycheck.com/comfortable-humidity-level-outside),
+<br>
+[The Effects of PM2.5 Concentrations and Relative Humidity on Atmospheric Visibility in Beijing](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JD029269),
+<br>
+[Effects of urban river width on the temperature and humidity of nearby green belts in summer](https://pubmed.ncbi.nlm.nih.gov/22720611/),
+<br>
+[Influence of different factors on relative air humidity in Zaragoza, Spain](https://www.frontiersin.org/articles/10.3389/feart.2015.00010/full).
+
+---
+
+class: center, middle
+
+# Thanks!
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+The R packages we used: [**tidyverse**](https://doi.org/10.21105/joss.01686), [**lubridate**](https://www.jstatsoft.org/v40/i03/), [**leaflet**](https://CRAN.R-project.org/package=leaflet), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**visdat**](http://dx.doi.org/10.21105/joss.00355).
+
+Data is downloaded from: 
+<br>
+[City of Melbourne-Microclimate Sensor Locations](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Locations/irqv-hjr4),
+<br>
+[City of Melbourne-Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
+
+
+
+Other references: 
+<br>
+[Environmental Protection Agency-Lesson 3:  Humidity](https://www.epa.gov/mold/mold-course-chapter-2),
+<br>
+[Humidity Check-What Is a Comfortable Humidity Level Outside?](https://humiditycheck.com/comfortable-humidity-level-outside),
+<br>
+[The Effects of PM2.5 Concentrations and Relative Humidity on Atmospheric Visibility in Beijing](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JD029269),
+<br>
+[Effects of urban river width on the temperature and humidity of nearby green belts in summer](https://pubmed.ncbi.nlm.nih.gov/22720611/),
+<br>
+[Influence of different factors on relative air humidity in Zaragoza, Spain](https://www.frontiersin.org/articles/10.3389/feart.2015.00010/full).
+
+
+
+
+
