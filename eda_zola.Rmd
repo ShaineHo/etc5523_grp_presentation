@@ -1,0 +1,92 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+library(tidyverse)
+library(here)
+library(tidytext)
+library(plotly)
+library(psych)
+library(ggExtra)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+data1 <- read_csv(here("data/locations.csv"))
+data2 <- read_csv(here("data/Microclimate_Sensor_Locations.csv"))
+weather_data <- read_csv(here("data/weather.csv"))
+```
+
+```{r}
+weather_data <- weather_data %>% 
+    mutate(humidity_categoric = factor(
+           case_when(
+           between(relative_humidity_percent, 0, 30) ~ "low",
+           between(relative_humidity_percent, 30, 60) ~ "medium",
+           between(relative_humidity_percent, 60, 100) ~ "high"
+         ),
+         levels = c("low", "medium", "high")
+         )) %>% 
+    mutate(temp_category = factor(
+           case_when(
+           between(ambient_temperature_celsius, -20, 10) ~ "low",
+           between(ambient_temperature_celsius, 10, 20) ~ "medium",
+           between(ambient_temperature_celsius, 20, 100) ~ "high"
+         ),
+         levels = c("low", "medium", "high")
+         ))
+```
+
+```{r}
+pairs.panels(weather_data[11:16], method = "pearson",  # correlation method
+             hist.col = "#00AFBB", 
+             density = TRUE,  # show density plots
+             ellipses = TRUE # show correlation ellipses
+             )
+```
+```{r}
+p2 <- weather_data %>% 
+  ggplot(aes(relative_humidity_percent, ambient_temperature_celsius, 
+             color = as.factor(temp_category)))+
+  geom_point()
+```
+
+```{r}
+ggMarginal(p2, 
+           margins = "x", 
+           groupColour = TRUE, groupFill = TRUE)
+```
+
+```{r}
+weather_data %>% 
+  drop_na(temp_category) %>% 
+  ggplot(aes(x=temp_category, y=relative_humidity_percent, fill=site_id)) + 
+    geom_boxplot()+
+  coord_flip()
+```
+
+```{r}
+weather_data %>% 
+  ggplot(aes(relative_humidity_percent, pm2_5))+
+  geom_point()+
+  scale_y_log10()+
+  facet_wrap(~site_id,
+             scales = "free"
+             ) 
+```
+
