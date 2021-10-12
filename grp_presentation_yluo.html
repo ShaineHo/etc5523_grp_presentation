@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Humidity in Melbourne</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yin Shan Ho, Yu Luo, Zoljargal Batsaikhan" />
+    <meta name="date" content="2021-10-12" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet/leaflet.js"></script>
+    <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding/leaflet.js"></script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Humidity in Melbourne
+### Yin Shan Ho, Yu Luo, Zoljargal Batsaikhan
+### Monash University
+### 2021-10-12
+
+---
+
+
+background-image: url(https://www.melbournegems.com/images/xmelbourne-weather.jpg.pagespeed.ic.UX-q8gxi4B.jpg)
+
+
+
+# The 'crazy' weather in Melbourne
+
+.footnote[Image credit: [melbournegems](https://www.melbournegems.com/melbourne-weather.html#sthash.yzWUj1YE.dpbs)]
+
+---
+
+
+
+##Introduction
+
+--
+
+- [Humidity Check](https://humiditycheck.com/comfortable-humidity-level-outside)  
+the relative humidity level outside is considered comfortable between 30% and 50%.  
+
+--
+
+- [Environmental Protection Agency](https://www.epa.gov/mold/mold-course-chapter-2)  
+the relative humidity should be kept below 60 percent
+
+--
+
+## Questions
+
+--
+
+- How does relative humidity in Melbourne change throughout the measured time?
+
+--
+
+- When is it most uncomfortable to walk around the city (humidity below 30% or above 60%)?
+
+---
+## Data Description
+
+
+
+--
+
+- The location.csv data is downloaded from [City of Melbourne- Microclimate-Sensor-locations](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Locations/irqv-hjr4) 
+
+--
+
+- Contains the location and location description for each microclimate sensor device installed throughout the city.
+
+--
+
+## The locations of the sensor in Map
+
+<div id="htmlwidget-593b76db1ec54ac286a4" style="width:100%;height:45%;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-593b76db1ec54ac286a4">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addMarkers","args":[[-37.82250002,-37.8175,-37.810278,-37.822222,-37.813333,-37.82246,-37.812778,-37.811944,-37.81686763],[144.95222195,144.967222,144.9725,144.952222,144.97,144.951835,144.960556,144.956389,144.96570467],null,[1010,1014,1015,1011,1012,1007,1016,1013,1009],null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},["Site1010, Melbourne Convention Centre Carpark, approximately 31m NE of Bababoi, Unit 16, Ground 60 Siddeley StreetDOCKLANDS VIC 3008","Site1014, Flinders Street between Swanston Street and Elizabeth Street, approximately 15m South of Young & Jackson, Young And Jacksons Hotel1-7 Swanston StreetMELBOURNE VIC 3000","Site1015, Spring Street between Little Bourke Street and Lonsdale Street, approximately 13m NE of COVID closed as at 12-JUN-21, 185-197 Spring StreetMELBOURNE VIC 3000","Site1011, Melbourne Convention Centre Carpark, approximately 38m East of Care Park, Melbourne Convention Centre Carpark671-701 Flinders StreetDOCKLANDS VIC 3008","Site1012, Little Collins Street between Exhibition Street and Russell Street, approximately 8m NW of Stamford Plaza Melbourne, 111 Little Collins StreetMELBOURNE VIC 3000","Site1007, Siddeley Street between Spencer Street and Wurundjeri Way, approximately 24m South of Care Park, Melbourne Convention Centre Carpark671-701 Flinders StreetDOCKLANDS VIC 3008","Site1016, Lonsdale Street between Elizabeth Street and Queen Street, approximately 16m South of Who Salon, 402 Lonsdale StreetMELBOURNE VIC 3000","Site1013, William Street between Little Lonsdale Street and La Trobe Street, approximately 24m West of The Mint Bar & Restaurant, Northern GuardhouseRoyal Mint318 William StreetMELBOURNE VIC 3000","Site1009, Flinders Lane between Swanston Street and Elizabeth Street, approximately 7m South of Centro Espresso Cafe, Shop 2, 252 Flinders LaneMELBOURNE VIC 3000"],null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"limits":{"lat":[-37.82250002,-37.810278],"lng":[144.951835,144.9725]}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+## Summary of locations.csv
+
+&lt;style type="text/css"&gt;
+    .pull-left {
+      float: left;
+    }
+    .pull-right {
+     width: 35%;
+    }
+&lt;/style&gt;
+
+--
+
+![](grp_presentation_yluo_files/figure-html/loction-miss-1.png)&lt;!-- --&gt;
+
+--
+
+- Data types: **Numeric**, **Character**, **Date**
+
+--
+
+- **end_reading** all missing
+
+--
+
+- 4th data missing in **last_data**.
+
+---
+
+## The data dictionary of locations.csv
+
+&lt;div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; "&gt;&lt;table class="table table-striped" style="font-size: 12px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;color: white !important;background-color: #0C85E4 !important;text-align: center;"&gt; Variables &lt;/th&gt;
+   &lt;th style="text-align:left;color: white !important;background-color: #0C85E4 !important;text-align: center;"&gt; Description &lt;/th&gt;
+   &lt;th style="text-align:left;color: white !important;background-color: #0C85E4 !important;text-align: center;"&gt; Data-type &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; site_id &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unique location id referring to the location of sensor device (used to link the location of the sensor device to the Microclimate Sensor Readings dataset &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Numeric &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gateway_hub_id &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Unique sensor device id. One sensor device will contain multiple microclimate sensors (used in combination with the site_id to link to the Microclimate Sensor Readings dataset &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Character &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; description &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Description of the location of the sensor device &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Character &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; last_data &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date and time when the last data was sent from a sensor associated with the sensor device &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; site_status &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Indicates if the site is a historic location for the sensor device or currently in use. R = retired, the location is no longer in use. C = current, the present location of the sensor device &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Character &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; start_reading &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date and time sensor device began transmitting data from this site &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; longitude &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Longitude of the site &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Numeric &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; latitude &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Latitude of the site &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Numeric &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; location.type &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Type of the location &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Character &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; end_reading &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date and time sensor device stopped transmitting data from this site &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Date &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;&lt;/div&gt;
+
+---
+## Summary of weather.csv
+
+![](grp_presentation_yluo_files/figure-html/weather-miss-1.png)&lt;!-- --&gt;
+--
+
+- Downloaded from [City of Melbourne- Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
+--
+
+- Contains environmental readings from microclimate sensors
+--
+
+- Data dictionary is accessible [Here](https://data.melbourne.vic.gov.au/api/views/u4vh-84j8/files/a2a9a6e3-2d46-4469-8d04-3335306034d5?download=true&amp;filename=MicroClimateSensors_Metadata_Attachment_DataDictionary.pdf)
+
+---
+
+## Count of the obseravations in weather.csv
+
+&lt;style type="text/css"&gt;
+    .pull-left {
+      width: 70%;
+    }
+    .pull-right {
+     width: 30%;
+    }
+&lt;/style&gt;
+
+--
+
+.pull-left[
+
+&lt;img src="grp_presentation_yluo_files/figure-html/obs-count-1.png" height="80%" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+- The data is from 2021-05-27 to   2021-10-04.
+
+- Updated every 15 minutes 
+
+- 4obs `\(\times\)` 24hr/day   `\(=\)` 96obs/day
+
+- To determine microclimate changes
+]
+
+---
+
+
+class: inverse, middle, center
+
+
+    &lt;img src="https://static-int.testo.com/media/4c/fa/4655130c014a/Teaser-Unterseiten-2000x1500pix_master.jpg" style="width: 70%" /&gt;
+
+
+# Analysis
+
+.footnote[Image credit: [testo](https://www.testo.com/en-AU/products/air-humidity-meter)]
+---
+
+# Overall trend of the humidity in Melbourne
+
+
+
+--
+
+![](grp_presentation_yluo_files/figure-html/overall-humidity-1.png)&lt;!-- --&gt;
+
+--
+
+- Huge variation of the Relative Humidity(RH)
+
+--
+
+- Rising trend of RH before and after Winter
+
+--
+
+- Downward trend  of RH in Winter time (Mid Jun to Sep)
+
+
+   
+---
+
+# Humidity Change by Time of A Day
+.pull-left[
+&lt;img src="grp_presentation_yluo_files/figure-html/humidity-bysite-time-1.png" width="90%" /&gt;
+]
+.pull-right[
+
+- Humidity changed throughout a day, all follow a similar pattern.
+&lt;br&gt;
+
+- Humidity turning points varies from place to place.
+&lt;br&gt;
+
+- Uncomfortable Time: 
+1. Morning: Site 1007, 1011, 1014 - before about 9:00, 10:00; Site 1009, 1010, 1012, 1013, 1015, 1016 - before about 11:00 to 12:00.
+2. Night: after about 17:00, 18:00. 
+]
+
+
+---
+
+# Humidity Change in Different Month 
+
+.pull-left[
+&lt;img src="grp_presentation_yluo_files/figure-html/humidity-bymonth-bysite-1.png" width="90%" /&gt;
+]
+.pull-right[
+- The time that humidity between 30% to 60% are longer in August and September than in October, June and July.
+&lt;br&gt;
+
+- Site 1014 has the longest comfortable time, then site 1010 and 1007; the humidity of 1012, 1013 and 1019 between comfortable range is shorter.
+
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

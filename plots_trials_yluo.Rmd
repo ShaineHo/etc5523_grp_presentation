@@ -53,7 +53,7 @@ weather_tidy <- weather %>%
            minute == 45 ~ paste0(hour,".75")),
          time = as.double(time),
          site_id = as.character(site_id),
-         month = month(local_date),
+         month = month(local_date, label = TRUE),
          datetime = make_datetime(year = year, 
                                   month = month, 
                                   day = day, 
@@ -67,7 +67,7 @@ weather_tidy <- weather %>%
 # class(weather_time$time)
 # class(weather$hour)
 # class(weather_tidy$month)
-class(weather_tidy$local_date)
+# class(weather_tidy$local_date)
 # class(weather$ambient_temperature_celsius)
 ```
 
@@ -110,11 +110,11 @@ p_leaflet
 
 # Humidity percent
 
-### Site 1007
+### By Site
 
-```{r 1007-by-month}
+```{r humidity-by-site}
 weather_tidy %>% 
-  filter(site_id == 1007) %>% 
+  # filter(site_id == 1007) %>% 
   ggplot() +
   geom_line(aes(x = time,
                 y = relative_humidity_percent,
@@ -124,8 +124,8 @@ weather_tidy %>%
   geom_smooth(aes(x = time,
                   y = relative_humidity_percent),
               se = FALSE) +
-  facet_wrap(~ month, ncol = 3)+
-  labs(x = "Time",
+  facet_wrap(~ site_id, ncol = 3)+
+  labs(x = "Time of A Day",
        y = "Humidity percent")
 ```
 

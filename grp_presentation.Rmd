@@ -16,6 +16,10 @@ background-image: url(https://upload.wikimedia.org/wikipedia/commons/b/be/Sharin
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+library(xaringan)
+library(tidyverse)
+library(ggplot2)
+library(DT)
 ```
 
 ???
@@ -633,3 +637,72 @@ class: center, middle
 Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
 
 The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](https://yihui.org/knitr/), and [R Markdown](https://rmarkdown.rstudio.com).
+
+---
+
+# Humidity Change by Time of A Day
+```{r read-data, eval = FALSE}
+weather <- read.csv("data/weather.csv")
+locations <- read.csv("data/locations.csv")
+```
+
+```{r tidy-data, eval = FALSE}
+weather_tidy <- weather %>% 
+  mutate(local_date = as.Date(local_date),
+         time = case_when(
+           minute == 0 ~ paste0(hour,".0"),
+           minute == 15 ~ paste0(hour,".25"),
+           minute == 30 ~ paste0(hour,".5"),
+           minute == 45 ~ paste0(hour,".75")),
+         time = as.double(time),
+         site_id = as.character(site_id),
+         month = month(local_date, label = TRUE),
+         datetime = make_datetime(year = year, 
+                                  month = month, 
+                                  day = day, 
+                                  hour = hour, 
+                                  min = minute,
+                                  sec = 0, 
+                                  tz = "Australia/Melbourne"))%>% 
+  filter(!is.na(relative_humidity_percent))
+
+# class(weather$local_date)
+# class(weather_time$time)
+# class(weather$hour)
+# class(weather_tidy$month)
+# class(weather_tidy$local_date)
+# class(weather$ambient_temperature_celsius)
+```
+
+.panelset[
+.panel[.panel-name[long]
+
+.w-70[
+```{r humidity-by-site}
+weather_tidy %>% 
+  # filter(site_id == 1007) %>% 
+  ggplot() +
+  geom_line(aes(x = time,
+                y = relative_humidity_percent,
+                group = local_date)) +
+  geom_hline(yintercept = 60, color = "red", linetype = "dashed") +
+  geom_hline(yintercept = 30, color = "red", linetype = "dashed") +
+  geom_smooth(aes(x = time,
+                  y = relative_humidity_percent),
+              se = FALSE) +
+  facet_wrap(~ site_id, ncol = 3)+
+  labs(x = "Time of A Day",
+       y = "Humidity percent")
+```
+]
+.w-30[
+
+They all have a pattern with humidity change with the day of a day.
+
+]
+]
+
+.panel[.panel-name[wide]
+
+]
+]
