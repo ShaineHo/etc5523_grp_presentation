@@ -6,13 +6,32 @@ date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
+    seal: false
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
 
+class: center, bottom, inverse
+
+background-image: url(https://www.rmets.org/sites/default/files/2021-05/UoR%20Weather%20Game%20banner.png)
+
+background-position: top
+
+# Humidity in Melbourne
+
+## Yin Shan Ho, Yu Luo, Zoljargal Batsaikhan
+
+## Monash University
+
+### `r Sys.Date()`
+
+---
+
 background-image: url(https://www.melbournegems.com/images/xmelbourne-weather.jpg.pagespeed.ic.UX-q8gxi4B.jpg)
+
+background-size: 60%
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
@@ -26,6 +45,47 @@ options(htmltools.dir.version = FALSE)
 # The 'crazy' weather in Melbourne
 
 .footnote[Image credit: [melbournegems](https://www.melbournegems.com/melbourne-weather.html#sthash.yzWUj1YE.dpbs)]
+
+---
+
+class: inverse
+
+```{css, echo = FALSE}
+.index-font {
+  font-size: 30px;
+  font-color: grey;
+}
+```
+
+# Index
+
+--
+
+.index-font[
+- Introduction
+
+]
+--
+
+.index-font[
+- Data Description
+]
+
+--
+
+.index-font[
+- Analysis
+
+ 1. Overview trend of humidity
+ 2. Humidity change by time and sites
+ 3. Correlations of humidity to other variables
+]
+ 
+--
+ 
+.index-font[
+- Conclusions and limitations
+]
 
 ---
 
@@ -120,42 +180,10 @@ visdat::vis_dat(locations)+
 --
 
 - 4th data missing in **last_data**.
-
 ---
 
-## The data dictionary of locations.csv
-
-```{r}
-data.frame(Variables = names(locations),
-           Description = c("Unique location id referring to the location of sensor device (used to link the location of the sensor device to the Microclimate Sensor Readings dataset",
-                           "Unique sensor device id. One sensor device will contain multiple microclimate sensors (used in combination with the site_id to link to the Microclimate Sensor Readings dataset",
-                           "Description of the location of the sensor device",
-                           "Date and time when the last data was sent from a sensor associated with the sensor device",
-                           "Indicates if the site is a historic location for the sensor device or currently in use. R = retired, the location is no longer in use. C = current, the present location of the sensor device",
-                           "Date and time sensor device began transmitting data from this site",
-                           "Longitude of the site",
-                           "Latitude of the site",
-                           "Type of the location",
-                           "Date and time sensor device stopped transmitting data from this site"),
-           Datatype = c("Numeric",
-                        "Character",
-                        "Character",
-                        "Date",
-                        "Character",
-                        "Date",
-                        "Numeric",
-                        "Numeric",
-                        "Character",
-                        "Date"   )) %>% 
-  kable(align = "l", 
-        col.names = c("Variables","Description", "Data-type")) %>% 
-  row_spec(0, color = "white", background = "#0C85E4", align = "c") %>% 
-  kable_styling(bootstrap_options = "striped", font_size = 12) %>% 
-  scroll_box(width = "100%")  
-```
-
----
 ## Summary of weather.csv
+--
 
 ```{r weather-miss,fig.height=6, fig.width=10}
 weather <- read_csv("data/weather.csv")
@@ -167,12 +195,10 @@ visdat::vis_dat(weather)+
 --
 
 - Downloaded from [City of Melbourne- Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
+
 --
 
 - Contains environmental readings from microclimate sensors
---
-
-- Data dictionary is accessible [Here](https://data.melbourne.vic.gov.au/api/views/u4vh-84j8/files/a2a9a6e3-2d46-4469-8d04-3335306034d5?download=true&filename=MicroClimateSensors_Metadata_Attachment_DataDictionary.pdf)
 
 ---
 
@@ -220,6 +246,46 @@ weather %>% group_by(site_id, local_date) %>%
 
 - To determine microclimate changes
 ]
+---
+
+## The data dictionary of :
+
+--
+
+- locations.csv
+
+```{r}
+data.frame(Variables = names(locations),
+           Description = c("Unique location id referring to the location of sensor device (used to link the location of the sensor device to the Microclimate Sensor Readings dataset",
+                           "Unique sensor device id. One sensor device will contain multiple microclimate sensors (used in combination with the site_id to link to the Microclimate Sensor Readings dataset",
+                           "Description of the location of the sensor device",
+                           "Date and time when the last data was sent from a sensor associated with the sensor device",
+                           "Indicates if the site is a historic location for the sensor device or currently in use. R = retired, the location is no longer in use. C = current, the present location of the sensor device",
+                           "Date and time sensor device began transmitting data from this site",
+                           "Longitude of the site",
+                           "Latitude of the site",
+                           "Type of the location",
+                           "Date and time sensor device stopped transmitting data from this site"),
+           Datatype = c("Numeric",
+                        "Character",
+                        "Character",
+                        "Date",
+                        "Character",
+                        "Date",
+                        "Numeric",
+                        "Numeric",
+                        "Character",
+                        "Date"   )) %>% 
+  kable(align = "l", 
+        col.names = c("Variables","Description", "Data-type")) %>% 
+  row_spec(0, color = "white", background = "#0C85E4", align = "c") %>% 
+  kable_styling(bootstrap_options = "striped", font_size = 12) %>% 
+  scroll_box(width = "100%")  
+```
+
+--
+
+- Source data of weather.csv is accessible [Here](https://data.melbourne.vic.gov.au/api/views/u4vh-84j8/files/a2a9a6e3-2d46-4469-8d04-3335306034d5?download=true&filename=MicroClimateSensors_Metadata_Attachment_DataDictionary.pdf)
 
 ---
 
