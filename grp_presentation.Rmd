@@ -78,7 +78,7 @@ class: inverse
 .index-font[
 - Analysis
 
- 1. Overview trend of humidity
+ 1. Overview of daily humidity in Melbourne
  2. Humidity change by time and sites
  3. Correlations of humidity to other variables
 ]
@@ -86,9 +86,16 @@ class: inverse
 --
  
 .index-font[
-- Conclusions and limitations
+- Conclusions
 ]
 
+.index-font[
+- Limitations
+]
+
+.index-font[
+- Acknowledgment and References
+]
 ---
 
 
@@ -154,16 +161,6 @@ locations %>%
 
 ## Summary of locations.csv
 
-``` {css, echo = FALSE} 
-    .pull-left {
-      float: left;
-    }
-
-    .pull-right {
-     width: 35%;
-    }
-```
-
 --
 
 ```{r loction-miss, fig.height=5, fig.width=10}
@@ -208,11 +205,11 @@ visdat::vis_dat(weather)+
 
 ``` {css, echo = F} 
     .pull-left {
-      width: 70%;
+      width: 65%;
     }
 
     .pull-right {
-     width: 30%;
+     width: 35%;
     }
 ```
 
@@ -303,7 +300,54 @@ class: inverse, middle, center
 .footnote[Image credit: [testo](https://www.testo.com/en-AU/products/air-humidity-meter)]
 ---
 
-# Overall trend of the humidity in Melbourne
+## Overview of daily humidity in Melbourne
+
+```{r overall-humidity, fig.height=4.5, fig.width=10}
+weather %>% 
+  mutate(month = factor(month, levels = month.abb)) %>% 
+  group_by(month, day) %>% 
+  summarise(average = mean(relative_humidity_percent, na.rm = TRUE)) %>% 
+  ggplot(aes(reorder(month, desc(month)), day, fill = average)) +
+  geom_tile(color= "white",size=0.1) + 
+  theme_classic() +
+  scale_fill_viridis(name="Relative humidity (percentage)",option ="C", direction = -1)+
+  scale_y_continuous(breaks = seq(1, 31, by = 1))+
+  coord_flip()+
+    theme(axis.line=element_blank(),
+        axis.ticks=element_blank(),
+        legend.position="bottom",
+          panel.background=element_blank(),
+        panel.border=element_blank(),panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),
+        plot.background=element_blank())+
+      labs(y = "Day of the month",
+         x = "Month")
+```
+--
+.pull-left[
+```{r}
+weather %>% 
+  mutate(month = factor(month, levels = month.abb)) %>% 
+  group_by(month, day) %>% 
+ summarise(avg_humidity = mean(relative_humidity_percent, na.rm = TRUE)) %>% 
+  group_by(month) %>% 
+  count(avg_humidity <= 60) %>% 
+  filter(`avg_humidity <= 60` == TRUE) %>% 
+  select(-`avg_humidity <= 60`) %>% 
+    kable(align = "c", 
+        col.names = c("Month", "Number of days below 60%")) %>% 
+  row_spec(0, color = "white", background = "#E98023", align = "c") %>% 
+  kable_styling(bootstrap_options = "striped", font_size = 12)
+```
+]
+.pull-right[
+- Darkness indicates humidity
+- Wet in winter
+- Relatively comfortable in Spring]
+
+---
+
+# Humidity Change by Time of A Day
 
 ```{r}
 weather_tidy <- weather %>% 
@@ -325,44 +369,6 @@ weather_tidy <- weather %>%
                                   tz = "Australia/Melbourne"))%>% 
   filter(!is.na(relative_humidity_percent))
 ```
-
---
-
-```{r overall-humidity, fig.height=5, fig.width=10}
-weather_tidy %>%
-  ggplot() +
-  geom_line(aes(x = datetime,
-                y = relative_humidity_percent),
-            color = "#0C85E4") +
-  geom_smooth(aes(x = datetime,
-                  y = relative_humidity_percent),
-              color = "red3",
-              se = FALSE)+
-  theme_bw()+
-  labs(x = "Date",
-       y = "Relative Humidity(%)")+
-  theme(legend.position = "none") +
-  scale_color_brewer(palette = "Dark2")
-
-```
-
---
-
-- Huge variation of the Relative Humidity(RH)
-
---
-
-- Rising trend of RH before and after Winter
-
---
-
-- Downward trend of RH in Winter time (Mid Jun to Sep)
-
-
-   
----
-
-# Humidity Change by Time of A Day
 
 .pull-left[
 ```{r humidity-bysite-time, out.width= "90%"}
@@ -618,9 +624,31 @@ class: inverse
 ]
 
 --
+.conclusion-font[
+- When humidity is higher, air quality gets worse.
+]
+
+--
+.conclusion-font[
+- Humidity below 30% is more comfortable than above 60% as it is warmer and air quality is more likely to be better.
+]
+---
+
+# Limitations
+--
 
 .conclusion-font[
-- When humidity is high, air quality gets worse.
+- Limited number of data for further comparisons by sites.
+]
+--
+
+.conclusion-font[
+- Limited length of the data for further comparisons by years.
+]
+--
+
+.conclusion-font[
+- Limited elaborations to the the topic as humidity can be impacted by many other factors, like weather, seasons, locations, etc.
 ]
 ---
 class: inverse
