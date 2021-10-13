@@ -616,78 +616,81 @@ weather_data %>%
 ]
 
 ---
+class: inverse
 
-## Conclusion
+```{css, echo = FALSE}
+.conclusion-font {
+  font-size: 25px;
+}
+```
+
+
+# Conclusion
 
 --
 
+.conclusion-font[
 - Overall trend is RH lower during winter time.
+]
 
 --
-
+.conclusion-font[
 - Daily pattern suggests between 9 and 12 in the morning and evening after 6 is convenient time to go for walk around city.
+]
 
 --
-
+.conclusion-font[
 - As temperature increases humidity decreases.
+]
 
 --
 
+.conclusion-font[
 - When humidity is high, air quality gets worse.
-
+]
 ---
+class: inverse
+
 # Acknowledgments and References
+--
 
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+```{css, echo = FALSE}
+.default-font {
+  font-size: 23px;
+}
+```
 
-The R packages we used: [**tidyverse**](https://doi.org/10.21105/joss.01686), [**lubridate**](https://www.jstatsoft.org/v40/i03/), [**leaflet**](https://CRAN.R-project.org/package=leaflet), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**visdat**](http://dx.doi.org/10.21105/joss.00355).
+.default-font[**Slides created by**:]
+- [**xaringan**](https://github.com/yihui/xaringan),
 
-Data is downloaded from: 
-<br>
-[City of Melbourne-Microclimate Sensor Locations](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Locations/irqv-hjr4),
-<br>
-[City of Melbourne-Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
+.default-font[**The R packages used**:]
+- [**tidyverse**](https://doi.org/10.21105/joss.01686),
+[**lubridate**](https://www.jstatsoft.org/v40/i03/),
+[**leaflet**](https://CRAN.R-project.org/package=leaflet),
+[**kableExtra**](https://CRAN.R-project.org/package=kableExtra),
+[**visdat**](http://dx.doi.org/10.21105/joss.00355)
+
+.default-font[**Data downloaded from**:]
+-  [City of Melbourne-Microclimate-Sensor- Locations](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Locations/irqv-hjr4)  
+- [City of Melbourne-Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
 
 
-
-Other references: 
-<br>
-[Environmental Protection Agency-Lesson 3:  Humidity](https://www.epa.gov/mold/mold-course-chapter-2),
-<br>
-[Humidity Check-What Is a Comfortable Humidity Level Outside?](https://humiditycheck.com/comfortable-humidity-level-outside),
-<br>
-[The Effects of PM2.5 Concentrations and Relative Humidity on Atmospheric Visibility in Beijing](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JD029269),
-<br>
-[Effects of urban river width on the temperature and humidity of nearby green belts in summer](https://pubmed.ncbi.nlm.nih.gov/22720611/),
-<br>
-[Influence of different factors on relative air humidity in Zaragoza, Spain](https://www.frontiersin.org/articles/10.3389/feart.2015.00010/full).
+.default-font[**Other references**:]
+- [Environmental Protection Agency-Lesson 3:  Humidity](https://www.epa.gov/mold/mold-course-chapter-2)  
+- [Humidity Check-What Is a Comfortable Humidity Level Outside?](https://humiditycheck.com/comfortable-humidity-level-outside)  
+- [The Effects of PM2.5 Concentrations and Relative Humidity on Atmospheric Visibility in Beijing](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JD029269)  
+- [Effects of urban river width on the temperature and humidity of nearby green belts in summer](https://pubmed.ncbi.nlm.nih.gov/22720611/)    
+- [Influence of different factors on relative air humidity in Zaragoza, Spain](https://www.frontiersin.org/articles/10.3389/feart.2015.00010/full)
 
 ---
 
-class: center, middle
+class: center
 
-# Thanks!
-
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
-
-The R packages we used: [**tidyverse**](https://doi.org/10.21105/joss.01686), [**lubridate**](https://www.jstatsoft.org/v40/i03/), [**leaflet**](https://CRAN.R-project.org/package=leaflet), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**visdat**](http://dx.doi.org/10.21105/joss.00355).
-
-Data is downloaded from: 
-<br>
-[City of Melbourne-Microclimate Sensor Locations](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Locations/irqv-hjr4),
-<br>
-[City of Melbourne-Microclimate-Sensor-Readings](https://data.melbourne.vic.gov.au/Environment/Microclimate-Sensor-Readings/u4vh-84j8) 
+background-image: url(https://www.english-learning.net/wp-content/uploads/2018/03/Thank-you.jpg)
 
 
+background-size: 70%
 
-Other references: 
-<br>
-[Environmental Protection Agency-Lesson 3:  Humidity](https://www.epa.gov/mold/mold-course-chapter-2),
-<br>
-[Humidity Check-What Is a Comfortable Humidity Level Outside?](https://humiditycheck.com/comfortable-humidity-level-outside),
-<br>
-[The Effects of PM2.5 Concentrations and Relative Humidity on Atmospheric Visibility in Beijing](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2018JD029269),
-<br>
-[Effects of urban river width on the temperature and humidity of nearby green belts in summer](https://pubmed.ncbi.nlm.nih.gov/22720611/),
-<br>
-[Influence of different factors on relative air humidity in Zaragoza, Spain](https://www.frontiersin.org/articles/10.3389/feart.2015.00010/full).
+# This is the end of the Presentation.
+
+
