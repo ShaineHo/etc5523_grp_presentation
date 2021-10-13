@@ -381,7 +381,8 @@ weather_tidy %>%
               se = FALSE) +
   facet_wrap(~ site_id, ncol = 3)+
   scale_color_brewer(palette = "Dark2") +
-  theme(legend.position = "none") +
+  theme(legend.position = "none")+
+  theme_minimal()+
   labs(x = "Time of A Day",
        y = "Humidity percent")
 ```
@@ -420,7 +421,8 @@ weather_tidy %>%
               se = FALSE) +
   facet_grid(month ~ site_id) +
   scale_color_brewer(palette = "Dark2") +
-  theme(legend.position = "none") +
+  theme(legend.position = "none")+
+  theme_minimal()+
   labs(x = "Time of a day",
        y = "Humidity percent")
 ```
@@ -462,6 +464,7 @@ weather_tidy %>%
                 group = site_id),
             color = "red") +
   scale_x_continuous(breaks = seq(0, 24, 6)) +
+  theme_minimal()+
   labs(x = "Time of a day",
        y = "Average humidity percent")
 ```
@@ -480,7 +483,7 @@ weather_tidy %>%
 ---
 # Relative humidity vs. ambient temperature
 .pull-left[
-```{r}
+```{r humidity-temperature, out.width= "90%"}
 weather_data <- weather %>% 
     mutate(humidity_categoric = factor(
            case_when(
@@ -514,8 +517,7 @@ p2 <- weather_data %>%
   geom_point(alpha = 0.3)+
     theme_minimal()+
       labs(y = "Relative humidity (Percentage)",
-         x = "Ambient temperature (Celsius)",
-          caption = "Data sourced from City of Melbourne") +
+         x = "Ambient temperature (Celsius)") +
   theme(axis.title.y = element_text(size = 11),
         axis.text.y = element_text(size = 11),
         legend.position = "right")+
@@ -541,7 +543,7 @@ ggMarginal(p2,
 # How does relationship change throughout the day?
 
 .center[
-```{r}
+```{r relationship-a-day, out.width= "60%"}
 weather_data %>% 
   ggplot(aes(ambient_temperature_celsius, relative_humidity_percent, 
              color = as.factor(time_day)
@@ -550,8 +552,7 @@ weather_data %>%
   facet_wrap(~time_day)+
     theme_minimal()+
       labs(y = "Relative humidity (Percentage)",
-         x = "Ambient temperature (Celsius)",
-          caption = "Figure 9. Data sourced from World Bank") +
+         x = "Ambient temperature (Celsius)") +
   theme(axis.title.y = element_text(size = 11),
         axis.text.y = element_text(size = 11),
         legend.position = "none")+
@@ -564,7 +565,7 @@ weather_data %>%
 ---
 # Relative humidity vs. pm 2.5 level
 .pull-left[
-```{r}
+```{r relationship-pm2-5, out.width= "90%"}
 p3 <- weather_data %>% 
   #filter(pm2_5<300) %>% 
   ggplot(aes( pm2_5, relative_humidity_percent))+
@@ -574,8 +575,7 @@ p3 <- weather_data %>%
     #scale_x_continuous(breaks = seq(0, 1100, by = 100))+
     theme(legend.position="bottom")+
       labs(y = "Relative humidity (Percentage)",
-         x = "PM 2.5 level (μg/m3)",
-         caption = "Data sourced from City of Melbourne")+
+         x = "PM 2.5 level (μg/m3)")+
   theme_minimal()
 p3
 ```
@@ -591,7 +591,7 @@ p3
 ---
 # Should we include it?
 .pull-left[
-```{r}
+```{r humidity-month, out.width= "90%"}
 weather_data %>% 
   mutate(month = factor(month, levels = month.abb)) %>% 
   group_by(month, day) %>% 
@@ -610,8 +610,7 @@ weather_data %>%
           panel.grid.minor=element_blank(),
         plot.background=element_blank())+
       labs(y = "Day of the month",
-         x = "Month",
-         caption = "Data sourced from City of Melbourne")
+         x = "Month")
 ```
 ]
 
