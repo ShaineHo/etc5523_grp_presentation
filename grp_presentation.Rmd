@@ -39,6 +39,8 @@ library(tidyverse)
 library(lubridate)
 library(leaflet)
 library(kableExtra)
+library(ggExtra)
+library(viridis)
 options(htmltools.dir.version = FALSE)
 ```
 
@@ -474,6 +476,164 @@ weather_tidy %>%
 - Humidity is also **affected by many factors**: [river width](https://pubmed.ncbi.nlm.nih.gov/22720611/), [topography, land cover, and surface reflectivity](https://www.frontiersin.org/articles/10.3389/feart.2015.00010/full) and so on.
 
 ]
+
+---
+# Relative humidity vs. ambient temperature
+.pull-left[
+```{r}
+weather_data <- weather %>% 
+    mutate(humidity_categoric = factor(
+           case_when(
+           between(relative_humidity_percent, 0, 30) ~ "low",
+           between(relative_humidity_percent, 30, 60) ~ "medium",
+           between(relative_humidity_percent, 60, 100) ~ "high"
+         ),
+         levels = c("low", "medium", "high")
+         )) %>% 
+    mutate(temp_category = factor(
+           case_when(
+           between(ambient_temperature_celsius, -20, 10) ~ "low",
+           between(ambient_temperature_celsius, 10, 20) ~ "medium",
+           between(ambient_temperature_celsius, 20, 100) ~ "high"
+         ),
+         levels = c("low", "medium", "high")
+         )) %>% 
+  mutate(time_day = factor(
+           case_when(
+           between(hour, 5, 12) ~ "Morning",
+           between(hour, 12, 18) ~ "Afternoon",
+           between(hour, 18, 23) ~ "Evening",
+           between(hour, 0, 5) ~ "Night"),
+         levels = c("Morning", "Afternoon", "Evening", "Night")
+         ))
+
+p2 <- weather_data %>% 
+  drop_na(humidity_categoric) %>% 
+  ggplot(aes(ambient_temperature_celsius, relative_humidity_percent, 
+             color = humidity_categoric))+
+  geom_point(alpha = 0.3)+
+    theme_minimal()+
+      labs(y = "Relative humidity (Percentage)",
+         x = "Ambient temperature (Celsius)",
+          caption = "Data sourced from City of Melbourne") +
+  theme(axis.title.y = element_text(size = 11),
+        axis.text.y = element_text(size = 11),
+        legend.position = "right")+
+  scale_fill_manual(name="Humidity")+
+  scale_y_continuous(breaks = seq(15, 100, by = 10))+
+    scale_x_continuous(breaks = seq(0, 35, by = 5))+
+  guides(fill=guide_legend(title="New Legend Title"))
+
+ggMarginal(p2, 
+           margins = "x", 
+           groupColour = TRUE, groupFill = TRUE)
+```
+]
+--
+.pull-right[
+- Negative association.
+
+- Humidity tend to be medium when temperature is between 10-20C.
+
+]
+
+---
+# How does relationship change throughout the day?
+
+.center[
+```{r}
+weather_data %>% 
+  ggplot(aes(ambient_temperature_celsius, relative_humidity_percent, 
+             color = as.factor(time_day)
+             ))+
+  geom_point(alpha = 0.3)+
+  facet_wrap(~time_day)+
+    theme_minimal()+
+      labs(y = "Relative humidity (Percentage)",
+         x = "Ambient temperature (Celsius)",
+          caption = "Figure 9. Data sourced from World Bank") +
+  theme(axis.title.y = element_text(size = 11),
+        axis.text.y = element_text(size = 11),
+        legend.position = "none")+
+  #scale_fill_viridis(name="Humidity", option ="C")+
+  scale_y_continuous(breaks = seq(10, 100, by = 20))+
+    scale_x_continuous(breaks = seq(0, 35, by = 5))
+```
+]
+
+---
+# Relative humidity vs. pm 2.5 level
+.pull-left[
+```{r}
+p3 <- weather_data %>% 
+  #filter(pm2_5<300) %>% 
+  ggplot(aes( pm2_5, relative_humidity_percent))+
+  geom_point(alpha = 0.1) +
+  scale_x_log10()+
+    scale_y_continuous(breaks = seq(15, 100, by = 10))+
+    #scale_x_continuous(breaks = seq(0, 1100, by = 100))+
+    theme(legend.position="bottom")+
+      labs(y = "Relative humidity (Percentage)",
+         x = "PM 2.5 level (μg/m3)",
+         caption = "Data sourced from City of Melbourne")+
+  theme_minimal()
+p3
+```
+]
+--
+.pull-right[
+- Air quality is likely to deteriorates when humidity is higher.
+
+- Some extreme values suggest potential data recording error.
+
+]
+
+---
+# Should we include it?
+.pull-left[
+```{r}
+weather_data %>% 
+  mutate(month = factor(month, levels = month.abb)) %>% 
+  group_by(month, day) %>% 
+  summarise(average = mean(relative_humidity_percent, na.rm = TRUE)) %>% 
+  ggplot(aes(reorder(month, desc(month)), day, fill = average)) +
+  geom_tile(color= "white",size=0.1) + 
+  theme_classic() +
+  scale_fill_viridis(name="Relative humidity (percentage)",option ="C")+
+  scale_y_continuous(breaks = seq(1, 31, by = 1))+
+  coord_flip()+
+    theme(axis.line=element_blank(),
+        axis.ticks=element_blank(),
+        legend.position="bottom",
+          panel.background=element_blank(),
+        panel.border=element_blank(),panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),
+        plot.background=element_blank())+
+      labs(y = "Day of the month",
+         x = "Month",
+         caption = "Data sourced from City of Melbourne")
+```
+]
+
+---
+
+## Conclusion
+
+--
+
+- Overall trend is RH lower during winter time.
+
+--
+
+- Daily pattern suggests between 9 and 12 in the morning and evening after 6 is convenient time to go for walk around city.
+
+--
+
+- As temperature increases humidity decreases.
+
+--
+
+- When humidity is high, air quality gets worse.
 
 ---
 # Acknowledgments and References
