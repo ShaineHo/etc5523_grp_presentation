@@ -334,6 +334,7 @@ weather_tidy %>%
 
 .pull-left[
 ```{r humidity-bymonth-bysite, out.width= "90%"}
+p <- 
 weather_tidy %>% 
   ggplot() +
   geom_line(aes(x = time,
@@ -351,6 +352,8 @@ weather_tidy %>%
   theme(legend.position = "none") +
   labs(x = "Time of a day",
        y = "Humidity percent")
+
+plotly::ggplotly(p)
 ```
 ]
 --
