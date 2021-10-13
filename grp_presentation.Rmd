@@ -253,7 +253,7 @@ weather %>% group_by(site_id, local_date) %>%
 
 - locations.csv
 
-```{r}
+```{r data-dict}
 data.frame(Variables = names(locations),
            Description = c("Unique location id referring to the location of sensor device (used to link the location of the sensor device to the Microclimate Sensor Readings dataset",
                            "Unique sensor device id. One sensor device will contain multiple microclimate sensors (used in combination with the site_id to link to the Microclimate Sensor Readings dataset",
@@ -325,7 +325,7 @@ weather %>%
 ```
 --
 .pull-left[
-```{r}
+```{r rhcount}
 weather %>% 
   mutate(month = factor(month, levels = month.abb)) %>% 
   group_by(month, day) %>% 
@@ -349,7 +349,7 @@ weather %>%
 
 # Humidity Change by Time of A Day
 
-```{r}
+```{r clean-data}
 weather_tidy <- weather %>% 
   mutate(local_date = as.Date(local_date),
          time = case_when(
