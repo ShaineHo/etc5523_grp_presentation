@@ -550,7 +550,7 @@ ggMarginal(p2,
 # How does relationship change throughout the day?
 
 .pull-left[
-```{r relationship-a-day, out.width= "60%"}
+```{r relationship-a-day, out.width= "90%"}
 weather_data %>% 
   ggplot(aes(ambient_temperature_celsius, relative_humidity_percent, 
              color = as.factor(time_day)
@@ -580,7 +580,8 @@ weather_data %>%
 ```{r relationship-pm2-5, out.width= "90%"}
 p3 <- weather_data %>% 
   #filter(pm2_5<300) %>% 
-  ggplot(aes( pm2_5, relative_humidity_percent))+
+  ggplot(aes( pm2_5, relative_humidity_percent,
+              color = humidity_categoric))+
   geom_point(alpha = 0.1) +
   scale_x_log10()+
     scale_y_continuous(breaks = seq(15, 100, by = 10))+
@@ -620,7 +621,7 @@ class: inverse
 
 --
 .conclusion-font[
-- Daily pattern suggests between 9 and 12 in the morning and evening after 6 is convenient time to go for walk around city.
+- Daily pattern suggests before 9 and 12 in the morning and evening after 6 is inconvenient time to go for walk around city.
 ]
 
 --
