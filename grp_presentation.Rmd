@@ -549,7 +549,7 @@ ggMarginal(p2,
 ---
 # How does relationship change throughout the day?
 
-.center[
+.pull-left[
 ```{r relationship-a-day, out.width= "60%"}
 weather_data %>% 
   ggplot(aes(ambient_temperature_celsius, relative_humidity_percent, 
@@ -567,6 +567,11 @@ weather_data %>%
   scale_y_continuous(breaks = seq(10, 100, by = 20))+
     scale_x_continuous(breaks = seq(0, 35, by = 5))
 ```
+]
+--
+.pull-right[
+- Evening and night times tend to be more humid due to low temperature.
+
 ]
 
 ---
@@ -638,17 +643,17 @@ class: inverse
 --
 
 .conclusion-font[
-- Limited number of data for further comparisons by sites.
+- Different number of observation for sites.
 ]
 --
 
 .conclusion-font[
-- Limited length of the data for further comparisons by years.
+- Our data contains only 5 months. Hence we could not analyze seasonality.
 ]
 --
 
 .conclusion-font[
-- Limited elaborations to the the topic as humidity can be impacted by many other factors, like weather, seasons, locations, etc.
+- Humidity can be impacted by many other factors, like weather, seasons, locations, etc.
 ]
 ---
 class: inverse
